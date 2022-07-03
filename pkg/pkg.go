@@ -23,8 +23,13 @@ func SelfPackage() error {
     if err != nil {
         return err
     }
-    // TODO: clean created temporary packaging directory
-	return package_directory("package", "package.tar.gz")
+	if err = package_directory("package", "package.tar.gz"); err != nil {
+        return err
+    }
+    if err = os.RemoveAll("package"); err != nil{
+        return err
+    }
+    return nil
 }
 
 func package_directory(baseFolder string, archive_name string) error {
