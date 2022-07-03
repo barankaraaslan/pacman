@@ -10,12 +10,12 @@ import (
 const version = "0.0.1"
 
 func main() {
-	if len(os.Args) == 2 {
+	if len(os.Args) >= 2 {
 		if os.Args[1] == "self-package" {
 			pkg.SelfPackage()
 		}
 	}
-	if len(os.Args) == 2 {
+	if len(os.Args) >= 2 {
 		if os.Args[1] == "server" {
 			server.Server()
 		}
