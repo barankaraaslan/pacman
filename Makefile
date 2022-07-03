@@ -17,3 +17,18 @@ test-docker-scratch:
 	docker build -t pacman .
 	docker run --rm pacman
 	@echo "Test passed"
+test-server: build
+	{ ./pacman server & echo $$! > server.PID; }
+	sleep 2
+	curl localhost:5001
+	kill `cat server.PID`
+	rm server.PID
+	@echo "Test passed"
+test-server-in-docker: 
+	docker build -t pacman .
+	{ docker run -p 5001:5001 --rm pacman server & echo $$! > server.PID; }
+	sleep 2
+	curl localhost:5001
+	kill `cat server.PID`
+	rm server.PID
+	@echo "Test passed"
