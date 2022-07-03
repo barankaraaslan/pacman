@@ -17,18 +17,27 @@ test-docker-scratch:
 	docker build -t pacman .
 	docker run --rm pacman
 	@echo "Test passed"
-test-server: build
+test-server-up: build
 	{ ./pacman server & echo $$! > server.PID; }
 	sleep 2
 	curl localhost:5001
 	kill `cat server.PID`
 	rm server.PID
 	@echo "Test passed"
-test-server-in-docker: 
-	docker build -t pacman .
-	{ docker run -p 5001:5001 --rm pacman server & echo $$! > server.PID; }
+test-server-downloaded-file: clean-test-server-downloaded-file build
+	# create self-package to host on server
+	./pacman self-package
+	mkdir packages-to-serve/
+	mv package.tar.gz packages-to-serve/
+	rm -rf package
+
+	{ ./pacman server & echo $$! > server.PID; }
 	sleep 2
-	curl localhost:5001
+	curl localhost:5001/package.tar.gz -O
+	cmp package.tar.gz packages-to-serve/package.tar.gz
 	kill `cat server.PID`
-	rm server.PID
+	rm server.PID package.tar.gz
 	@echo "Test passed"
+clean-test-server-downloaded-file:
+	-rm -rf packages-to-serve/
+	-rm package.tar.gz
