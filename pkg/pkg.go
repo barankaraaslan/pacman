@@ -11,8 +11,12 @@ import (
 
 func SelfPackage() error {
 	// TODO: consider system umask for creating the file
-	os.Mkdir("package", 0755)
-	os.Mkdir("package/bin", 0755)
+	if err := os.Mkdir("package", 0755); err != nil {
+        return err
+    }
+    if err := os.Mkdir("package/bin", 0755); err != nil {
+        return err
+    }
 
 	input, err := ioutil.ReadFile(os.Args[0])
     if err != nil {
