@@ -8,7 +8,7 @@ test-self-package: clean-test-self-package build
 	mkdir unpack
 	./pacman self-package
 	tar -xf package.tar.gz --directory unpack
-	find unpack
+	test -f unpack/bin/pacman
 	@echo "Test passed"
 clean-test-docker-scratch:
 	docker image rm pacman
