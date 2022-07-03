@@ -9,3 +9,9 @@ test-self-package: clean-test-self-package build
 	./pacman self-package
 	tar -xf package.tar.gz --directory unpack
 	find unpack
+clean-test-docker-scratch:
+	docker image rm pacman
+test-docker-scratch:
+	# Test if pacman is still runnable in a container from scratch
+	docker build -t pacman .
+	docker run --rm pacman
