@@ -6,7 +6,9 @@ import (
 )
 
 func main() {
-	if os.Args[1] == "self-package" {
-		pkg.SelfPackage()
+	if len(os.Args) == 2 {
+		if os.Args[1] == "self-package" {
+			pkg.SelfPackage()
+		}
 	}
 }
